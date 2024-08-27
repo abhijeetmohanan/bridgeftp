@@ -22,7 +22,7 @@ func main() {
 	destination_map_kv := utils.ParseInput("destination", *destination_ftp)
 
 	if utils.SchemeValidator(source_map_kv["scheme"]) && utils.SchemeValidator(destination_map_kv["scheme"]) {
-		log.Println("Good Boy ")
+		log.Println("Scheme Validated Both source and Destination are ftp endpoints")
 
 		// validate ftp parameters : panic on failure
 		utils.FtpParamsValidator(source_map_kv)
@@ -33,6 +33,6 @@ func main() {
 		utils.FtpClientHandler(source_map_kv, destination_map_kv)
 
 	} else {
-		log.Panicln("Maradchod :: ? ftp hai dono")
+		log.Panicln("Only FTP endooints are supported as of now")
 	}
 }
