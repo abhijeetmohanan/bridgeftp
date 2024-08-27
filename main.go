@@ -2,8 +2,9 @@ package main
 
 import (
 	"flag"
-	"gufcli/utils"
 	"log"
+
+	"github.com/abhijeetmohanan/ftpcli/utils"
 )
 
 func main() {
