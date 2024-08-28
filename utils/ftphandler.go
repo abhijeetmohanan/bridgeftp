@@ -9,7 +9,7 @@ import (
 	"github.com/jlaffaye/ftp"
 )
 
-func FtpClientHandler(source map[string]string, destination map[string]string) {
+func FtpClientHandler(source map[string]string, destination map[string]string, bytesize int) {
 	// Make connections
 	source_ftp, err := ftp.Dial(source["host"], ftp.DialWithTimeout(5*time.Second))
 	if err != nil {
@@ -41,16 +41,16 @@ func FtpClientHandler(source map[string]string, destination map[string]string) {
 	}
 
 	// initalize a buffer of size 64Kb
-	p := make([]byte, 64*1024)
+	chuckbuffer := make([]byte, bytesize*1024)
 
 	for {
-		n, err := reader_ftp.Read(p)
+		n, err := reader_ftp.Read(chuckbuffer)
 
 		if err == io.EOF {
 			break
 		}
 
-		wdata := bytes.NewBufferString(string(p[:n]))
+		wdata := bytes.NewBufferString(string(chuckbuffer[:n]))
 		err = destination_ftp.Append(destination["path"], wdata)
 		if err != nil {
 			log.Fatal(err)
