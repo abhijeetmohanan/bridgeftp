@@ -1,4 +1,4 @@
-module github.com/abhijeetmohanan/ftpcli
+module github.com/abhijeetmohanan/bridgeftp
 
 go 1.22.1
 

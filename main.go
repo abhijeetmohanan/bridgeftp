@@ -5,7 +5,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/abhijeetmohanan/ftpcli/utils"
+	"github.com/abhijeetmohanan/bridgeftp/utils"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 	utils.NullChecker("source", *source_ftp)
 	utils.NullChecker("destination", *destination_ftp)
 
-	bsvalue := 0
+	bsvalue := 64
 	var err error
 
 	// validate byte size
@@ -35,6 +35,8 @@ func main() {
 			log.Panicln("Failed :: Invalid default byte size", *bytesize)
 		}
 	}
+
+	log.Printf("Streaming Byte Size is %d Kb", bsvalue)
 
 	source_map_kv := utils.ParseInput("source", *source_ftp)
 	destination_map_kv := utils.ParseInput("destination", *destination_ftp)
