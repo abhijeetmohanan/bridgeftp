@@ -41,8 +41,8 @@ func main() {
 	source_map_kv := utils.ParseInput("source", *source_ftp)
 	destination_map_kv := utils.ParseInput("destination", *destination_ftp)
 
-	if utils.SchemeValidator(source_map_kv["scheme"]) && utils.SchemeValidator(destination_map_kv["scheme"]) {
-		log.Println("Scheme Validated Both source and Destination are ftp endpoints")
+	if source_map_kv["scheme"] == "ftp" && destination_map_kv["scheme"] == "ftp" {
+		log.Println("Source and Destination are ftp endpoints")
 
 		// validate ftp parameters : panic on failure
 		utils.FtpParamsValidator(source_map_kv)
@@ -51,8 +51,16 @@ func main() {
 		// Create Coonection and start streaming
 
 		utils.FtpClientHandler(source_map_kv, destination_map_kv, bsvalue)
+	}
+	if source_map_kv["scheme"] == "sftp" && destination_map_kv["scheme"] == "sftp" {
+		log.Println("Source and Destination are ftp endpoints")
 
-	} else {
-		log.Panicln("Only FTP endooints are supported as of now")
+		// validate ftp parameters : panic on failure
+		utils.FtpParamsValidator(source_map_kv)
+		utils.FtpParamsValidator(destination_map_kv)
+
+		// Create Coonection and start streaming
+
+		utils.SftpClientHandler(source_map_kv, destination_map_kv, bsvalue)
 	}
 }
