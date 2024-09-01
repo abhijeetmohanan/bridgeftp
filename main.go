@@ -7,8 +7,10 @@ import (
 	"github.com/abhijeetmohanan/bridgeftp/utils"
 )
 
+var version string = "testing"
+
 func main() {
-	log.Println("Starting Connection")
+	log.Printf("BridgeFTp Version = %s", version)
 	// Define flags
 	source_ftp := flag.String("src", "", "Source ftp endpoint Example: ftp://user:pass@host/filepath")
 	destination_ftp := flag.String("dest", "", "Destination ftp endpoint Example: ftp://user:pass@host/filepath")

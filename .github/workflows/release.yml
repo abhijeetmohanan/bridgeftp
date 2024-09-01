@@ -24,9 +24,16 @@ jobs:
         with:
           go-version: "1.23" # Specify your Go version here
 
+      - name: Get the tag value
+        id: get_tag
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Print the tag
+        run: echo "Tag value is ${{ env.TAG_NAME }}"
+
       - name: Build binary
         run: |
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o bridgeftp-${{ matrix.goos }}-${{ matrix.goarch }}
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -ldflags "-X main.version=${{ env.TAG_NAME }}" -o bridgeftp-${{ matrix.goos }}-${{ matrix.goarch }}
 
       - name: Archive binary
         run: |
