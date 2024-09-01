@@ -1,0 +1,49 @@
+name: Create Alpha Release
+
+on:
+  push:
+    tags:
+      - "alpha-*" # Trigger on tags that start with 'alpha-'
+
+jobs:
+  build:
+    name: Build and Release Binaries
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        goos: [linux, darwin, windows]
+        goarch: [amd64, arm64, 386]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.23" # Specify your Go version here
+
+      - name: Build binary
+        run: |
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o myapp-${{ matrix.goos }}-${{ matrix.goarch }}
+
+      - name: Archive binary
+        run: |
+          zip myapp-${{ matrix.goos }}-${{ matrix.goarch }}.zip myapp-${{ matrix.goos }}-${{ matrix.goarch }}
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: myapp-${{ matrix.goos }}-${{ matrix.goarch }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./myapp-${{ matrix.goos }}-${{ matrix.goarch }}.zip
+          asset_name: myapp-${{ matrix.goos }}-${{ matrix.goarch }}.zip
+          asset_content_type: application/zip
