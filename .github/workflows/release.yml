@@ -6,53 +6,27 @@ on:
       - "*" # Trigger on tags that start with 'alpha-'
 
 jobs:
-  build:
-    name: Build and Release Binaries
+  goreleaser:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        goos: [linux, windows, darwin]
-        goarch: [amd64, arm64]
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Go
-        uses: actions/setup-go@v3
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          go-version: "1.23" # Specify your Go version here
-
+          fetch-depth: 0
       - name: Get the tag value
         id: get_tag
         run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
       - name: Print the tag
         run: echo "Tag value is ${{ env.TAG_NAME }}"
-
-      - name: Build binary
-        run: |
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -ldflags "-X main.version=${{ env.TAG_NAME }}" -o bridgeftp-${{ matrix.goos }}-${{ matrix.goarch }}
-
-      - name: Archive binary
-        run: |
-          zip bridgeftp-${{ matrix.goos }}-${{ matrix.goarch }}.zip bridgeftp-${{ matrix.goos }}-${{ matrix.goarch }}
-
-      - name: Create GitHub Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
+      - name: Set up Go
+        uses: actions/setup-go@v5
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
         with:
-          files: bridgeftp-${{ matrix.goos }}-${{ matrix.goarch }}.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_CREATION_TOKEN }}
-
-      - name: Upload release assets
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bridgeftp-${{ matrix.goos }}-${{ matrix.goarch }}.zip
-          asset_name: bridgeftp-${{ matrix.goos }}-${{ matrix.goarch }}.zip
-          asset_content_type: application/zip
+          # either 'goreleaser' (default) or 'goreleaser-pro'
+          distribution: goreleaser
+          # 'latest', 'nightly', or a semver
+          version: "~> v2"
+          args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_CREATION_TOKEN }}

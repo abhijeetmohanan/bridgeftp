@@ -1,0 +1,10 @@
+builds:
+  - main: ./main.go
+    id: "bridgeftp"
+    binary: bridgeftp
+    goos:
+      - linux
+      - darwin
+      - windows
+    ldflags:
+      - -X "main.version=${{ .Env.TAG_NAME }}"
