@@ -75,13 +75,13 @@ func connectToSFTP(user, password, host string) (*sftp.Client, error) {
 
 	conn, err := ssh.Dial("tcp", host, config)
 	if err != nil {
-		log.Fatalf("failed to dial: %w", err)
+		log.Fatalf("failed to dial: %v", err)
 		return nil, err
 	}
 
 	client, err := sftp.NewClient(conn)
 	if err != nil {
-		log.Fatalf("failed to create SFTP client: %w", err)
+		log.Fatalf("failed to create SFTP client: %v", err)
 		return nil, err
 	}
 	log.Printf("SFTP Client initalized %s", host)

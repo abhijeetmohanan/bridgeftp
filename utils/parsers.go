@@ -5,7 +5,7 @@ import (
 	"net/url"
 )
 
-func ParseInput(key string, furl string) map[string]string {
+func ParseInput(key string, furl string) (map[string]string, error) {
 	// Define return variable
 
 	params := make(map[string]string)
@@ -14,7 +14,7 @@ func ParseInput(key string, furl string) map[string]string {
 	// Parse the URLs
 	sourceURL, err := url.Parse(furl)
 	if err != nil {
-		log.Panicf("Error parsing source URL: %v\n", err)
+		return params, err
 	}
 
 	// Output the parsed URLs
@@ -37,7 +37,7 @@ func ParseInput(key string, furl string) map[string]string {
 
 	log.Println(key + ":: " + parameters)
 
-	return params
+	return params, nil
 }
 
 func NullChecker(key string, ftpurl string) {
@@ -48,7 +48,7 @@ func NullChecker(key string, ftpurl string) {
 }
 
 func SchemeValidator(scheme string) bool {
-	log.Println("scheme: %s", scheme)
+	log.Printf("scheme: %s", scheme)
 	if scheme == "ftp" {
 		return true
 	}

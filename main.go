@@ -25,8 +25,14 @@ func main() {
 
 	log.Printf("Streaming Byte Size is %d Kb", bsvalue)
 
-	source_map_kv := utils.ParseInput("source", *source_ftp)
-	destination_map_kv := utils.ParseInput("destination", *destination_ftp)
+	source_map_kv, err := utils.ParseInput("source", *source_ftp)
+	if err != nil {
+		log.Fatalf("Failed to parse input %v", err)
+	}
+	destination_map_kv, err := utils.ParseInput("destination", *destination_ftp)
+	if err != nil {
+		log.Fatalf("Failed to parse input %v", err)
+	}
 
 	if source_map_kv["scheme"] == "ftp" && destination_map_kv["scheme"] == "ftp" {
 		log.Println("Source and Destination are ftp endpoints")
@@ -35,7 +41,7 @@ func main() {
 		utils.FtpParamsValidator(source_map_kv)
 		utils.FtpParamsValidator(destination_map_kv)
 
-		// Create Coonection and start streaming
+		// Create Connection and start streaming
 
 		utils.FtpClientHandler(source_map_kv, destination_map_kv, bsvalue)
 	}
