@@ -34,7 +34,7 @@ func main() {
 		log.Fatalf("Failed to parse input %v", err)
 	}
 
-	if source_map_kv["scheme"] == "ftp" && destination_map_kv["scheme"] == "ftp" {
+	if utils.SchemeValidator(source_map_kv["scheme"], destination_map_kv["scheme"], "ftp") {
 		log.Println("Source and Destination are ftp endpoints")
 
 		// validate ftp parameters : panic on failure
@@ -45,7 +45,7 @@ func main() {
 
 		utils.FtpClientHandler(source_map_kv, destination_map_kv, bsvalue)
 	}
-	if source_map_kv["scheme"] == "sftp" && destination_map_kv["scheme"] == "sftp" {
+	if utils.SchemeValidator(source_map_kv["scheme"], destination_map_kv["scheme"], "sftp") {
 		log.Println("Source and Destination are ftp endpoints")
 
 		// validate ftp parameters : panic on failure

@@ -47,10 +47,11 @@ func NullChecker(key string, ftpurl string) {
 	}
 }
 
-func SchemeValidator(scheme string) bool {
-	log.Printf("scheme: %s", scheme)
-	if scheme == "ftp" {
-		return true
+func SchemeValidator(source, dest, key string) bool {
+	if source == dest {
+		if source == key {
+			return true
+		}
 	}
 	return false
 }
