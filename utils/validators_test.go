@@ -23,6 +23,27 @@ func TestNullChecker(t *testing.T) {
 	}
 }
 
+func TestSchemeValidator(t *testing.T) {
+	test := []struct {
+		source   string
+		dest     string
+		key      string
+		expected bool
+	}{
+		{"ftp", "ftp", "ftp", true},
+		{"sftp", "ftp", "ftp", false},
+		{"sftp", "sftp", "ftp", false},
+	}
+	for _, tt := range test {
+		t.Run(tt.source, func(t *testing.T) {
+			result := SchemeValidator(tt.source, tt.dest, tt.key)
+			if result != tt.expected {
+				t.Errorf("Expected %v, got %v", tt.expected, result)
+			}
+		})
+	}
+}
+
 func TestFtpParamsValidator(t *testing.T) {
 	test := []struct {
 		input    map[string]string

@@ -6,12 +6,7 @@ func NullChecker(ftpurl string) bool {
 }
 
 func SchemeValidator(source, dest, key string) bool {
-	if source == dest {
-		if source == key {
-			return true
-		}
-	}
-	return false
+	return (source == dest && dest == key)
 }
 
 func FtpParamsValidator(params map[string]string) bool {
