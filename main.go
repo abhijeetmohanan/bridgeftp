@@ -18,8 +18,12 @@ func main() {
 
 	flag.Parse()
 
-	utils.NullChecker("source", *source_ftp)
-	utils.NullChecker("destination", *destination_ftp)
+	if utils.NullChecker(*source_ftp) {
+		log.Fatal("source_ftp Empty")
+	}
+	if utils.NullChecker(*destination_ftp) {
+		log.Fatal("destination_ftp Empty")
+	}
 
 	bsvalue := *bytesize
 

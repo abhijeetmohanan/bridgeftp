@@ -39,27 +39,3 @@ func ParseInput(key string, furl string) (map[string]string, error) {
 
 	return params, nil
 }
-
-func NullChecker(key string, ftpurl string) {
-	// Check if string is null
-	if ftpurl == "" {
-		log.Panicf("Error: Empty URL for %s", key)
-	}
-}
-
-func SchemeValidator(source, dest, key string) bool {
-	if source == dest {
-		if source == key {
-			return true
-		}
-	}
-	return false
-}
-
-func FtpParamsValidator(params map[string]string) {
-	for k, v := range params {
-		if v == "" {
-			log.Panicf("Null Values passed for %v", k)
-		}
-	}
-}
