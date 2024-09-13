@@ -42,8 +42,12 @@ func main() {
 		log.Println("Source and Destination are ftp endpoints")
 
 		// validate ftp parameters : panic on failure
-		utils.FtpParamsValidator(source_map_kv)
-		utils.FtpParamsValidator(destination_map_kv)
+		if utils.FtpParamsValidator(source_map_kv) {
+			log.Fatal("Null parameters passed in source")
+		}
+		if utils.FtpParamsValidator(destination_map_kv) {
+			log.Fatal("Null parameters passed in Destination")
+		}
 
 		// Create Connection and start streaming
 
@@ -53,10 +57,14 @@ func main() {
 		log.Println("Source and Destination are ftp endpoints")
 
 		// validate ftp parameters : panic on failure
-		utils.FtpParamsValidator(source_map_kv)
-		utils.FtpParamsValidator(destination_map_kv)
+		if utils.FtpParamsValidator(source_map_kv) {
+			log.Fatal("Null parameters passed in source")
+		}
+		if utils.FtpParamsValidator(destination_map_kv) {
+			log.Fatal("Null parameters passed in Destination")
+		}
 
-		// Create Coonection and start streaming
+		// Create Connection and start streaming
 
 		utils.SftpClientHandler(source_map_kv, destination_map_kv, bsvalue)
 	}

@@ -1,9 +1,5 @@
 package utils
 
-import (
-	"log"
-)
-
 func NullChecker(ftpurl string) bool {
 	// Check if string is null
 	return ftpurl == ""
@@ -18,10 +14,11 @@ func SchemeValidator(source, dest, key string) bool {
 	return false
 }
 
-func FtpParamsValidator(params map[string]string) {
-	for k, v := range params {
-		if v == "" {
-			log.Panicf("Null Values passed for %v", k)
+func FtpParamsValidator(params map[string]string) bool {
+	for _, v := range params {
+		if NullChecker(v) {
+			return true
 		}
 	}
+	return false
 }
